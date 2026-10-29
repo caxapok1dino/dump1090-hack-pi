@@ -1,0 +1,6 @@
+.git
+recordings
+testfiles
+*.o
+dump1090
+frames.js

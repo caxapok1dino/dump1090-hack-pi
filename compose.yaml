@@ -1,0 +1,22 @@
+services:
+  dump1090:
+    build: .
+    image: hackrf-dump1090:local
+    restart: unless-stopped
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - ./recordings:/recordings
+    device_cgroup_rules:
+      - 'c 189:* rmw'
+    ports:
+      - '8080:8080'
+      - '30002:30002'
+      - '30003:30003'
+    environment:
+      HACKRF_FREQUENCY_HZ: ${HACKRF_FREQUENCY_HZ:-1090000000}
+      HACKRF_LNA_GAIN: ${HACKRF_LNA_GAIN:-16}
+      HACKRF_VGA_GAIN: ${HACKRF_VGA_GAIN:-20}
+      HACKRF_AMP_ENABLE: ${HACKRF_AMP_ENABLE:-0}
+      HACKRF_SERIAL: ${HACKRF_SERIAL:-}
+      RECORD_SEGMENT_SECONDS: ${RECORD_SEGMENT_SECONDS:-60}
+      MAX_RECORDINGS: ${MAX_RECORDINGS:-10}
