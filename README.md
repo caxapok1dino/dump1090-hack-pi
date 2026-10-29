@@ -36,38 +36,8 @@ Type "make".
 Raspberry Pi with HackRF (Docker)
 ---
 
-This container captures 1090 MHz IQ from a HackRF at 8 million complex samples
-per second. It saves the original signed 8-bit interleaved I/Q (`.cs8`) files,
-then resamples a live copy to the 2 MHz unsigned IQ format expected by Dump1090.
-The 8 MHz capture rate follows the [HackRF sampling guidance](https://hackrf.readthedocs.io/en/stable/sampling_rate.html).
-Use a Raspberry Pi with Docker Compose, a connected HackRF, and
-storage that can sustain 16 MB/s of writes.
-
-From this directory, run:
-
-    mkdir -p recordings
-    docker compose up -d --build
-    docker compose logs -f
-
-Open `http://<pi-address>:8080` for the map. Raw and SBS1 feeds are available
-on ports 30002 and 30003. Stop with `docker compose down`. To check USB access
-before starting the receiver, run:
-
-    docker compose run --rm --no-deps --entrypoint hackrf_info dump1090
-
-Recording files appear in `recordings/`. By default, each file contains one
-minute of capture (about 960 MB) and only the newest ten files are kept. Set
-`RECORD_SEGMENT_SECONDS` and `MAX_RECORDINGS` in the environment or a Compose
-`.env` file to change this; `MAX_RECORDINGS=0` disables deletion. For example:
-
-    RECORD_SEGMENT_SECONDS=30 MAX_RECORDINGS=4 docker compose up -d --build
-
-You can also set `HACKRF_LNA_GAIN`, `HACKRF_VGA_GAIN`, `HACKRF_AMP_ENABLE`,
-`HACKRF_FREQUENCY_HZ`, and `HACKRF_SERIAL`. The defaults are 16 dB LNA, 20 dB
-VGA, RF amplifier off, and 1090 MHz. An interrupted capture leaves its current
-file usable. Replay a saved file without the HackRF with:
-
-    ffmpeg -f s8 -ar 8000000 -ac 2 -i recordings/FILE.cs8 -ar 2000000 -ac 2 -f u8 - | ./dump1090 --ifile -
+See the [Raspberry Pi setup guide](docs/raspberry-pi.md) for Docker installation,
+USB access, recording settings, startup commands, and replay instructions.
 
 Normal usage
 ---

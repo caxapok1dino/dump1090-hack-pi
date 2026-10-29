@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     volumes:
       - /dev/bus/usb:/dev/bus/usb
-      - ./recordings:/recordings
+      - ${RECORDINGS_HOST_DIR:-./recordings}:/recordings
     device_cgroup_rules:
       - 'c 189:* rmw'
     ports:

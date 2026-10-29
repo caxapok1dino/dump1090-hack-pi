@@ -1,5 +1,6 @@
 .git
 recordings
+.env
 testfiles
 *.o
 dump1090
